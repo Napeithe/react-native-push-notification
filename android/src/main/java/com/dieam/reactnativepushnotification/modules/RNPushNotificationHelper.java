@@ -70,7 +70,13 @@ public class RNPushNotificationHelper {
     }
 
     private PendingIntent toScheduleNotificationIntent(Bundle bundle) {
-        int notificationID = Integer.parseInt(bundle.getString("id"));
+        String id = bundle.getString("id");
+        if ( id == null) {
+            Log.e(LOG_TAG, "No notification ID specified for the scheduled notification");
+            id = "0";
+        }
+
+        int notificationID = id.hashCode();
 
         Intent notificationIntent = new Intent(context, RNPushNotificationPublisher.class);
         notificationIntent.putExtra(RNPushNotificationPublisher.NOTIFICATION_ID, notificationID);
@@ -320,7 +326,7 @@ public class RNPushNotificationHelper {
                 }
             }
 
-            int notificationID = Integer.parseInt(notificationIdString);
+            int notificationID = notificationIdString.hashCode();
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationID, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
@@ -535,7 +541,7 @@ public class RNPushNotificationHelper {
         // removed it from the notification center
         NotificationManager notificationManager = notificationManager();
 
-        notificationManager.cancel(Integer.parseInt(notificationIDString));
+        notificationManager.cancel(notificationIDString.hashCode());
     }
 
     private NotificationManager notificationManager() {
