@@ -114,7 +114,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
 
                 // Dismiss the notification popup.
                 NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-                int notificationID = Integer.parseInt(bundle.getString("id"));
+                int notificationID = bundle.getString("id").hashCode();
                 manager.cancel(notificationID);
             }
         }, intentFilter);
